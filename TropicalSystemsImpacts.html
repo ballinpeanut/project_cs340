@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tropical Impacts</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+         }
+            else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+
+        function newImpact() { showForm ('insert');}
+        function browseImpacts() { showForm ('browse');}
+    </script>
+</head>
+<body onload="browseImpacts()">
+    <h1>Tropical System Impacts</h1>
+
+    <a href="index.html">Home</a>
+    <a href="TropicalSystems.html">Tropical Storms</a>
+    <a href="Impacts.html">Impacts</a>
+    <a href="TropicalSystemsImpacts.html">Tropical System Impacts</a>
+    <a href="TropicalSystemsStats.html">Tropical System Stats</a>
+</body>
+</html>

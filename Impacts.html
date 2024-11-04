@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tropical Impacts</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+         }
+            else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+
+        function addImpact() { showForm ('insert');}
+        function browseImpacts() { showForm ('browse');}
+    </script>
+</head>
+<body onload="browseImpacts()">
+    <h1>Impacts</h1>
+
+    <a href="index.html">Home</a>
+    <a href="TropicalSystems.html">Tropical Storms</a>
+    <a href="Impacts.html">Impacts</a>
+    <a href="TropicalSystemsImpacts.html">Tropical System Impacts</a>
+    <a href="TropicalSystemsStats.html">Tropical System Stats</a>
+
+    <h3>Different impacts tropical systems can have</h3>
+    
+    <div id="browse">
+        <a href="#" onclick="addImpact()">New</a>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>impact_id</th>
+                <th>impact_type</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>No damage</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Flooding</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Create -->
+    <div id="insert">
+        <form method="post" id="addImpact">
+            <legend><strong>Add new impact</strong></legend>
+            <fieldset class="fields">
+                <label>impact ID:</label> <input type='text' name="impact_id">
+                <label>impact type:</label> <input type='text' name="impact_type">
+            </fieldset>
+            <input class="btn" type="submit" id="addImpact" value="Add Impact">
+            <input class="btn" type="button" value="Cancel" onclick="browseImpacts()">
+        </form>
+
+    </div>
+</body>
+</html>
