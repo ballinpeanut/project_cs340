@@ -41,23 +41,37 @@
 <body onLoad="browseStorms()">
     <h1>Atlantic Hurricane Database</h1>
 
-    <a href="index.html">Home</a>
-    <a href="TropicalSystems.html">Tropical Storms</a>
-    <a href="Impacts.html">Impacts</a>
-    <a href="TropicalSystemsImpacts.html">Tropical System Impacts</a>
-    <a href="TropicalSystemsStats.html">Tropical System Stats</a>
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="TropicalSystems.html">Tropical Storms</a> |
+        <a href="Impacts.html">Impacts</a> |
+        <a href="TropicalSystemsImpacts.html">Tropical System Impacts</a> |
+        <a href="TropicalSystemsStats.html">Tropical System Stats</a>
+    </nav>
 
     <h3>
-        Click on each storm to view it's statistics
+        View all storms ocurring in a single season.
     </h3>
-    <h5>Add, edit, or delete storms </h5>
+
+    <div id="browse" style="display: block">
+        <form method="post" id="browseStats"></form>
+        <legend><strong>What season would you like to view?</strong></legend>
+        <fieldset class="fields">
+            <label> Season: </label> <select name="seasonSelect">
+                <option value=""></option>
+                <option value="year">2022</option>
+                <option value="year">2023</option>
+                </select>
+                <input class="btn" type="submit" id="browseStats" value="Browse stats">
+        </fieldset>
+    </div>
 
     <h2>Tropical Systems</h2>
     <div id="browse" style="display: block">
         <table border="1" cellpadding="5">
             <tr>
-                <th>New</th>
-                <th>Edit</th>
+                <th><a href="#" onclick="addStorm()">New</a></th>
+                <th></th>
                 <th>season_id</th>
                 <th>system_id</th>
                 <th>name</th>
@@ -67,26 +81,12 @@
                 <th>land_impact</th>
             </tr>
             <tr>
-                <td><a href="#" onclick="updateStorm('this.system_id')">Edit</a></td>
                 <td><a href="#" onclick="deleteStorm('this.system_id')">Delete</a></td>
-                <td><a href="TropicalSystems.html?year=2022">2022</a></td>
-                <td>1</td>
-                <td>Alex</td>
-                <td>2022-06-05</td>
-                <td>2022-06-06</td>
-                <td>TS</td>
-                <td>1</td>
+                <td><a href="#" onclick="updateStorm('this.system_id')">Edit</a></td>
             </tr>
             <tr>
-                <td><a href="#" onclick="updateStorm('this.system_id')">Edit</a></td>
                 <td><a href="#" onclick="deleteStorm('this.system_id')">Delete</a></td>
-                <td><a href="TropicalSystems.html?year=2023">2023</a></td>
-                <td>1</td>
-                <td>Arlene</td>
-                <td>2022-06-01</td>
-                <td>2022-06-03</td>
-                <td>TS</td>
-                <td>1</td>
+                <td><a href="#" onclick="updateStorm('this.system_id')">Edit</a></td>
             </tr>
         </table>
     </div>
@@ -123,8 +123,9 @@
                 </select>
         </fieldset>
         <input class="btn" type="submit" id="addStorm" value="Add Storm">
-              <input class="btn" type="button" value="Cancel" onClick="browseStorms()">
+        <input class="btn" type="button" value="Cancel" onClick="browseStorms()">
     </div>
+
     <!-- Update Storm -->
     <div id="update">
         <form method="post" id="updateStorm">
@@ -159,7 +160,8 @@
               <input class="btn" type="button" value="Cancel" onClick="browseStorms()">
         </form>
     </div>
-
+    
+    <!-- Delete Storm -->
     <div id="delete">
         <form method="post" id="deleteStorm">
             <legend><strong>Delete Storm</strong></legend>
@@ -170,7 +172,7 @@
                 <label><strong>system_id: </strong></label> 1
                 <label><strong>Name: </strong></label> Alex
             </fieldset>
-            <input class="btn" type="submit" id="deleteStorm value="Delete System">
+            <input class="btn" type="submit" id="deleteSystem" value="Delete System">
             <input class="btn" type="button" value="Cancel" onClick="browseStorms()">
         </form>
     </div>

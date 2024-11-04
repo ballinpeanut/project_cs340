@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tropical Impacts</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat == 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+            else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+
+        function addStats() { showForm ('insert');}
+        function browseStats() { showForm ('browse');}
+        function updateStats() { showForm ('update');}
+    </script>
+</head>
+<body onload="browseStats()">
+    <h1>Tropical System Stats</h1>
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="TropicalSystems.html">Tropical Storms</a> |
+        <a href="Impacts.html">Impacts</a> |
+        <a href="TropicalSystemsImpacts.html">Tropical System Impacts</a> |
+        <a href="TropicalSystemsStats.html">Tropical System Stats</a>
+    </nav>
+    <h3>
+        View tropical system stats on a per season basis
+    </h3>
+    <div id="browse" style="display: block">
+        <form method="post" id="browseStats"></form>
+        <legend><strong>What season would you like to view?</strong></legend>
+        <fieldset class="fields">
+            <label> Season: </label> <select name="seasonSelect">
+                <option value=""></option>
+                <option value="year">2022</option>
+                <option value="year">2023</option>
+                </select>
+                <input class="btn" type="submit" id="browseStats" value="Browse stats">
+        </fieldset>
+    </div>
+
+    <h2>Stats for [year] Hurricane Season</h2>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th><a href="#" onclick="addStats()">New</a></th>
+            <th>stat_id</th>
+            <th>season_id</th>
+            <th>system_id</th>
+            <th>min_pressure</th>
+            <th>max_wind_speed</th>
+            <th>max_rainfall</th>
+            <th>max_storm_surge</th>
+            <th>death_count</th>
+            <th>injury_count</th>
+            <th>total_cost</th>
+        </tr>
+        <tr>
+            <td><a href="#" onclick="updateStats('this.system_id')">Edit</a></td>
+        </tr>
+    </table> 
+
+    <!-- Create/Insert Storm -->
+    <div id="insert">
+        <form method="post" id="addStat"></form>
+        <legend><strong>Add new storm</strong></legend>
+        <fieldset class="fields">
+            <label> Season: </label> <strong>[YEAR]</strong>
+            <label> min_pressure: </label> <input type="text" name="min_pressure">
+            <label> max_wind_speed: </label> <input type="text" name="max_wind_speed">
+            <label> max_rainfall: </label> <input type="text" name="max_rainfall">
+            <label>max_storm_surge: </label> <input type="text" name="max_storm_surge">
+            <label>death_count: </label> <input type="text" name="death_count">
+            <label>injury_count: </label> <input type="text" name="injury_count">
+            <label>total_cost: </label> <input type="text" name="total_cost">
+        </fieldset>
+        <input class="btn" type="submit" id="addStats" value="Add Stats">
+        <input class="btn" type="button" value="Cancel" onClick="browseStats()">
+    </div>
+
+    <!-- Update Storm -->
+    <div id="update">
+        <form method="post" id="updateStats">
+            <legend><strong>Update Stats</strong></legend>
+            <fieldset class="fields">
+                <label> Season: </label> <strong>[YEAR]</strong>
+            <label> system_id: </label> <input type="text" name="system_id" value="1">
+            <label> min_pressure (mb): </label> <input type="text" name="min_pressure" value="Alex">
+            <label> max_wind_speed (mph): </label> <input type="text" name="max_wind_speed" value="998">
+            <label> max_rainfall (inches): </label> <input type="text" name="max_rainfall" value="25">
+            <label> max_storm_surge (feet): </label> <input type="text" name="max_category" value="10">
+            <label> death_count: </label> <input type="text" name="death_count" value="4">
+            <label> injury_count: </label> <input type="text" name="injury_count" value="55">
+            <label> total_cost: </label> <input type="text" name="total_cost" value="235,000,000">
+          </fieldset>
+              <input class="btn" type="submit" id="updateStorm" value="Update Stats">
+              <input class="btn" type="button" value="Cancel" onClick="browseStats()">
+        </form>
+    </div>
+
+</body>
+</html>
