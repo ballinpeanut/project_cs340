@@ -7,18 +7,29 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
     <script lang="JavaScript">
         function showForm(dowhat) {
-            if (dowhat === 'update') {
+            if (dowhat == 'update') {
                 document.getElementById('browse').style.display = 'none';
                 document.getElementById('insert').style.display = 'none';
                 document.getElementById('update').style.display = 'block';
-            } else if (dowhat === 'insert') {
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'insert') {
                 document.getElementById('browse').style.display = 'none';
                 document.getElementById('insert').style.display = 'block';
                 document.getElementById('update').style.display = 'none';
-            } else {
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'delete') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'block';
+            }
+            else {
                 document.getElementById('browse').style.display = 'block';
                 document.getElementById('insert').style.display = 'none';
                 document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
             }
         }
 
@@ -36,6 +47,11 @@
             document.getElementById('update_total_cost').value = total_cost;
             showForm('update');
         }
+        function deleteStat(stat_id) {
+        document.getElementById('delete_system_id').value = stat_id;
+        showForm('delete');
+        }
+        function browseStats() { showForm ('browse');}
     </script>
 </head>
 <body onload="showForm('browse')">
@@ -66,6 +82,7 @@
         <table border="1" cellpadding="5">
             <tr>
                 <th><a href="#" onclick="addStats()">New</a></th>
+                <th></th>
                 <th>Stat ID</th>
                 <th>Season ID</th>
                 <th>System ID</th>
@@ -79,6 +96,7 @@
             </tr>
             {% for TropicalSystemStats in TropicalSystemStats %}
             <tr>
+                <td><a href="#" onclick="deleteStat('{{ TropicalSystemStats.stat_id }}')">Delete</a></td>
                 <td>
                     <a href="#" 
                         onclick="updateStats(
@@ -95,8 +113,6 @@
                         )">
                         Edit
                     </a>
-                    |
-                    <a href="#" onclick="deleteStat('{{ TropicalSystemStats.stat_id }}')">Delete</a>
                 </td>
                 <td>{{ TropicalSystemStats.stat_id }}</td>
                 <td>{{ TropicalSystemStats.season_id }}</td>
@@ -114,7 +130,7 @@
         
     </div>
 
-    <!-- Insert Form -->
+    <!-- Insert Stat -->
     <div id="insert" style="display: none;">
         <form method="post" action="{{ url_for('add_tropical_system_stat') }}">
             <fieldset>
@@ -133,7 +149,7 @@
         </form>
     </div>
 
-    <!-- Update Form -->
+    <!-- Update Stat -->
     <div id="update" style="display: none;">
         <form method="post" action="{{ url_for('update_tropical_system_stat') }}">
             <fieldset>
@@ -150,6 +166,19 @@
             </fieldset>
             <input type="submit" value="Update Stat">
             <input type="button" value="Cancel" onclick="showForm('browse')">
+        </form>
+    </div>
+
+    <!-- Delete Stat -->
+    <div id="delete" style="display: none;">
+        <form method="post" action="{{ url_for('delete_tropical_system_stat') }}">
+            <legend><strong>Delete Stat</strong></legend>
+            <fieldset>
+                <input type="hidden" name="system_id" id="delete_system_id">
+                <p>Are you sure you want to delete this stat?</p>
+            </fieldset>
+            <input type="submit" value="Delete Stat">
+            <input type="button" value="Cancel" onclick="browseStats()">
         </form>
     </div>
 </body>

@@ -7,22 +7,25 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <script lang="JavaScript">
         function showForm(dowhat) {
-            if (dowhat === 'insert') {
-                document.getElementById('browse').style.display = 'none';
-                document.getElementById('insert').style.display = 'block';
-                document.getElementById('update').style.display = 'none';
-                document.getElementById('delete').style.display = 'none';
-            } else if (dowhat === 'update') {
+            if (dowhat == 'update') {
                 document.getElementById('browse').style.display = 'none';
                 document.getElementById('insert').style.display = 'none';
                 document.getElementById('update').style.display = 'block';
                 document.getElementById('delete').style.display = 'none';
-            } else if (dowhat === 'delete') {
+            }
+            else if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'delete') {
                 document.getElementById('browse').style.display = 'none';
                 document.getElementById('insert').style.display = 'none';
                 document.getElementById('update').style.display = 'none';
                 document.getElementById('delete').style.display = 'block';
-            } else {
+            }
+            else {
                 document.getElementById('browse').style.display = 'block';
                 document.getElementById('insert').style.display = 'none';
                 document.getElementById('update').style.display = 'none';
@@ -66,6 +69,7 @@
         <table border="1" cellpadding="5">
             <tr>
                 <th><a href="#" onclick="addImpact()">New</a></th>
+                <th></th>
                 <th>Season ID</th>
                 <th>System ID</th>
                 <th>Impact ID</th>
@@ -77,6 +81,7 @@
             </tr>
             {% for TropicalSystemImpacts in TropicalSystemImpacts %}
             <tr>
+                <td><a href="#" onclick="deleteImpact('{{ TropicalSystemImpacts.system_id }}')">Delete</a></td>
                 <td>
                     <a href="#" 
                         onclick="updateImpact(
@@ -91,8 +96,6 @@
                         )">
                         Edit
                     </a>
-                    |
-                    <a href="#" onclick="deleteImpact('{{ TropicalSystemImpacts.system_id }}')">Delete</a>
                 </td>
                 <td>{{ TropicalSystemImpacts.season_id }}</td>
                 <td>{{ TropicalSystemImpacts.system_id }}</td>
@@ -107,7 +110,7 @@
         </table>        
     </div>
 
-    <!-- Insert Form -->
+    <!-- Insert Impact -->
     <div id="insert" style="display: none;">
         <form method="post" action="{{ url_for('add_tropical_system_impact') }}">
             <legend><strong>Add New Impact</strong></legend>
@@ -126,7 +129,7 @@
         </form>
     </div>
 
-    <!-- Update Form -->
+    <!-- Update Impact -->
     <div id="update" style="display: none;">
         <form method="post" action="{{ url_for('update_tropical_system_impact') }}">
             <legend><strong>Update Impact</strong></legend>
@@ -145,7 +148,7 @@
         </form>
     </div>
 
-    <!-- Delete Form -->
+    <!-- Delete Impact -->
     <div id="delete" style="display: none;">
         <form method="post" action="{{ url_for('delete_tropical_system_impact') }}">
             <legend><strong>Delete Impact</strong></legend>
