@@ -15,3 +15,6 @@ gunicorn -b 0.0.0.0:12017 -D app.app
 
 -- Or this for testing --
 python app.py
+
+-- to kill your process --
+pkill -9 -u user gunicorn

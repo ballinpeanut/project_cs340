@@ -65,7 +65,7 @@
     <div id="browse">
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addImpact()">New</a></th>
+                <th>Actions</th>
                 <th>Season ID</th>
                 <th>System ID</th>
                 <th>Impact ID</th>
@@ -74,19 +74,9 @@
                 <th>Country</th>
                 <th>Region</th>
                 <th>Description</th>
-                <th>Actions</th>
             </tr>
             {% for TropicalSystemImpacts in TropicalSystemImpacts %}
             <tr>
-                <td></td>
-                <td>{{ TropicalSystemImpacts.season_id }}</td>
-                <td>{{ TropicalSystemImpacts.system_id }}</td>
-                <td>{{ TropicalSystemImpacts.impact_id }}</td>
-                <td>{{ TropicalSystemImpacts.city }}</td>
-                <td>{{ TropicalSystemImpacts.state }}</td>
-                <td>{{ TropicalSystemImpacts.country }}</td>
-                <td>{{ TropicalSystemImpacts.region }}</td>
-                <td>{{ TropicalSystemImpacts.localized_impact_desc }}</td>
                 <td>
                     <a href="#" 
                         onclick="updateImpact(
@@ -98,15 +88,23 @@
                             '{{ TropicalSystemImpacts.country }}', 
                             '{{ TropicalSystemImpacts.region }}', 
                             '{{ TropicalSystemImpacts.localized_impact_desc }}'
-                            )">
-                            Edit
-                        </a>
+                        )">
+                        Edit
+                    </a>
                     |
                     <a href="#" onclick="deleteImpact('{{ TropicalSystemImpacts.system_id }}')">Delete</a>
                 </td>
+                <td>{{ TropicalSystemImpacts.season_id }}</td>
+                <td>{{ TropicalSystemImpacts.system_id }}</td>
+                <td>{{ TropicalSystemImpacts.impact_id }}</td>
+                <td>{{ TropicalSystemImpacts.city }}</td>
+                <td>{{ TropicalSystemImpacts.state }}</td>
+                <td>{{ TropicalSystemImpacts.country }}</td>
+                <td>{{ TropicalSystemImpacts.region }}</td>
+                <td>{{ TropicalSystemImpacts.localized_impact_desc }}</td>
             </tr>
             {% endfor %}
-        </table>
+        </table>        
     </div>
 
     <!-- Insert Form -->

@@ -65,6 +65,7 @@
         <h2>Stats for Selected Season</h2>
         <table border="1" cellpadding="5">
             <tr>
+                <th>Actions</th>
                 <th>Stat ID</th>
                 <th>Season ID</th>
                 <th>System ID</th>
@@ -75,20 +76,9 @@
                 <th>Death Count</th>
                 <th>Injury Count</th>
                 <th>Total Cost</th>
-                <th>Actions</th>
             </tr>
             {% for TropicalSystemStats in TropicalSystemStats %}
             <tr>
-                <td>{{ TropicalSystemStats.stat_id }}</td>
-                <td>{{ TropicalSystemStats.season_id }}</td>
-                <td>{{ TropicalSystemStats.system_id }}</td>
-                <td>{{ TropicalSystemStats.min_pressure }}</td>
-                <td>{{ TropicalSystemStats.max_wind_speed }}</td>
-                <td>{{ TropicalSystemStats.max_rainfall }}</td>
-                <td>{{ TropicalSystemStats.max_storm_surge }}</td>
-                <td>{{ TropicalSystemStats.death_count }}</td>
-                <td>{{ TropicalSystemStats.injury_count }}</td>
-                <td>{{ TropicalSystemStats.total_cost }}</td>
                 <td>
                     <a href="#" 
                         onclick="updateStats(
@@ -105,10 +95,23 @@
                         )">
                         Edit
                     </a>
+                    |
+                    <a href="#" onclick="deleteStat('{{ TropicalSystemStats.stat_id }}')">Delete</a>
                 </td>
+                <td>{{ TropicalSystemStats.stat_id }}</td>
+                <td>{{ TropicalSystemStats.season_id }}</td>
+                <td>{{ TropicalSystemStats.system_id }}</td>
+                <td>{{ TropicalSystemStats.min_pressure }}</td>
+                <td>{{ TropicalSystemStats.max_wind_speed }}</td>
+                <td>{{ TropicalSystemStats.max_rainfall }}</td>
+                <td>{{ TropicalSystemStats.max_storm_surge }}</td>
+                <td>{{ TropicalSystemStats.death_count }}</td>
+                <td>{{ TropicalSystemStats.injury_count }}</td>
+                <td>{{ TropicalSystemStats.total_cost }}</td>
             </tr>
             {% endfor %}
         </table>
+        
     </div>
 
     <!-- Insert Form -->
