@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlantic Hurricane Database</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat == 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+            }
+            else if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+            }
+            else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+            }
+        }
+        function newSeason() { showForm('insert'); }
+        function updateSeason(seasonId) {
+            document.getElementById('update_season_id').value = seasonId;
+            showForm('update');
+        }
+        function browseSeason() { showForm('browse'); }
+    </script>
+</head>
+<body onLoad="browseSeason()">
+    <h1>Atlantic Hurricane Database</h1>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a> |
+        <a href="{{ url_for('tropical_systems') }}">Tropical Storms</a> |
+        <a href="{{ url_for('impacts') }}">Impacts</a> |
+        <a href="{{ url_for('tropical_system_impacts') }}">Tropical System Impacts</a> |
+        <a href="{{ url_for('tropical_system_stats') }}">Tropical System Stats</a>
+    </nav>
+
+    <h3>Each season is represented by a year. (Click on the season to go to see the storms for that season)*</h3>
+    <p>* = not yet available</p>
+    <h5>Add or edit season counts.</h5>
+
+    <h2>Hurricane Seasons</h2>
+    <div id="browse">
+        <table border="1" cellpadding="5">
+            <tr>
+                <th><a href="#" onclick="newSeason()">New</a></th>
+                <th>Season ID</th>
+                <th>Hurricane Count</th>
+                <th>Tropical Storm Count</th>
+                <th>Tropical Depression Count</th>
+                <th>First Storm Date</th>
+                <th>Last Storm Date</th>
+            </tr>
+            {% for HurricaneSeasons in HurricaneSeasons %}
+            <tr>
+                <td><a href="#" onclick="updateSeason('{{ HurricaneSeasons.season_id }}')">Edit</a></td>
+                <td>{{ HurricaneSeasons.season_id }}</td>
+                <td>{{ HurricaneSeasons.hurricane_count }}</td>
+                <td>{{ HurricaneSeasons.tropical_storm_count }}</td>
+                <td>{{ HurricaneSeasons.tropical_depression_count }}</td>
+                <td>{{ HurricaneSeasons.first_storm_date }}</td>
+                <td>{{ HurricaneSeasons.last_storm_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Insert Form -->
+    <div id="insert" style="display: none;">
+        <form method="post" action="{{ url_for('add_season') }}">
+            <legend><strong>Add new season</strong></legend>
+            <fieldset class="fields">
+                <label>Season:</label> <input type="text" name="season_id">
+                <label>Number of Hurricanes:</label> <input type="text" name="hurricane_count">
+                <label>Number of Tropical Storms:</label> <input type="text" name="tropical_storm_count">
+                <label>Number of Tropical Depressions:</label> <input type="text" name="tropical_depression_count">
+                <label>First Storm Date:</label> <input type="text" name="first_storm_date" placeholder="YYYY-MM-DD">
+                <label>Last Storm Date:</label> <input type="text" name="last_storm_date" placeholder="YYYY-MM-DD">
+            </fieldset>
+            <input class="btn" type="submit" value="Add Season">
+            <input class="btn" type="button" value="Cancel" onclick="browseSeason()">
+        </form>
+    </div>
+
+    <!-- Update Form -->
+    <div id="update" style="display: none;">
+        <form method="post" action="{{ url_for('update_season') }}">
+            <legend><strong>Update Season</strong></legend>
+            <fieldset class="fields">
+                <input type="hidden" name="season_id" id="update_season_id">
+                <label>Number of Hurricanes:</label> <input type="text" name="hurricane_count">
+                <label>Number of Tropical Storms:</label> <input type="text" name="tropical_storm_count">
+                <label>Number of Tropical Depressions:</label> <input type="text" name="tropical_depression_count">
+                <label>First Storm Date:</label> <input type="text" name="first_storm_date" placeholder="YYYY-MM-DD">
+                <label>Last Storm Date:</label> <input type="text" name="last_storm_date" placeholder="YYYY-MM-DD">
+            </fieldset>
+            <input class="btn" type="submit" value="Update Season">
+            <input class="btn" type="button" value="Cancel" onclick="browseSeason()">
+        </form>
+    </div>
+</body>
+</html>

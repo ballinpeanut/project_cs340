@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tropical System Impacts</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat === 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            } else if (dowhat === 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'none';
+            } else if (dowhat === 'delete') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'block';
+            } else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+
+        function addImpact() { showForm('insert'); }
+        function updateImpact(season_id, system_id, impact_id, city, state, country, region, desc) {
+            document.getElementById('update_season_id').value = season_id;
+            document.getElementById('update_system_id').value = system_id;
+            document.getElementById('update_impact_id').value = impact_id;
+            document.getElementById('update_city').value = city;
+            document.getElementById('update_state').value = state;
+            document.getElementById('update_country').value = country;
+            document.getElementById('update_region').value = region;
+            document.getElementById('update_desc').value = desc;
+            showForm('update');
+        }
+        function deleteImpact(system_id) {
+            document.getElementById('delete_system_id').value = system_id;
+            showForm('delete');
+        }
+        function browseImpacts() { showForm('browse'); }
+    </script>
+</head>
+<body onload="browseImpacts()">
+    <h1>Tropical System Impacts</h1>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a> |
+        <a href="{{ url_for('tropical_systems') }}">Tropical Storms</a> |
+        <a href="{{ url_for('impacts') }}">Impacts</a> |
+        <a href="{{ url_for('tropical_system_impacts') }}">Tropical System Impacts</a> |
+        <a href="{{ url_for('tropical_system_stats') }}">Tropical System Stats</a>
+    </nav>
+
+    <h3>View what impacts each storm had in a season and where the impacts occurred.</h3>
+
+    <div id="browse">
+        <table border="1" cellpadding="5">
+            <tr>
+                <th><a href="#" onclick="addImpact()">New</a></th>
+                <th>Season ID</th>
+                <th>System ID</th>
+                <th>Impact ID</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Region</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            {% for TropicalSystemImpacts in TropicalSystemImpacts %}
+            <tr>
+                <td></td>
+                <td>{{ TropicalSystemImpacts.season_id }}</td>
+                <td>{{ TropicalSystemImpacts.system_id }}</td>
+                <td>{{ TropicalSystemImpacts.impact_id }}</td>
+                <td>{{ TropicalSystemImpacts.city }}</td>
+                <td>{{ TropicalSystemImpacts.state }}</td>
+                <td>{{ TropicalSystemImpacts.country }}</td>
+                <td>{{ TropicalSystemImpacts.region }}</td>
+                <td>{{ TropicalSystemImpacts.localized_impact_desc }}</td>
+                <td>
+                    <a href="#" 
+                        onclick="updateImpact(
+                            '{{ TropicalSystemImpacts.season_id }}', 
+                            '{{ TropicalSystemImpacts.system_id }}', 
+                            '{{ TropicalSystemImpacts.impact_id }}', 
+                            '{{ TropicalSystemImpacts.city }}', 
+                            '{{ TropicalSystemImpacts.state }}', 
+                            '{{ TropicalSystemImpacts.country }}', 
+                            '{{ TropicalSystemImpacts.region }}', 
+                            '{{ TropicalSystemImpacts.localized_impact_desc }}'
+                            )">
+                            Edit
+                        </a>
+                    |
+                    <a href="#" onclick="deleteImpact('{{ TropicalSystemImpacts.system_id }}')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Insert Form -->
+    <div id="insert" style="display: none;">
+        <form method="post" action="{{ url_for('add_tropical_system_impact') }}">
+            <legend><strong>Add New Impact</strong></legend>
+            <fieldset>
+                <label>Season:</label> <input type="text" name="season_id">
+                <label>System ID:</label> <input type="text" name="system_id">
+                <label>Impact ID:</label> <input type="text" name="impact_id">
+                <label>City:</label> <input type="text" name="city">
+                <label>State:</label> <input type="text" name="state">
+                <label>Country:</label> <input type="text" name="country">
+                <label>Region:</label> <input type="text" name="region">
+                <label>Description:</label> <input type="text" name="localized_impact_desc">
+            </fieldset>
+            <input type="submit" value="Add Impact">
+            <input type="button" value="Cancel" onclick="browseImpacts()">
+        </form>
+    </div>
+
+    <!-- Update Form -->
+    <div id="update" style="display: none;">
+        <form method="post" action="{{ url_for('update_tropical_system_impact') }}">
+            <legend><strong>Update Impact</strong></legend>
+            <fieldset>
+                <input type="hidden" name="system_id" id="update_system_id">
+                <input type="hidden" name="season_id" id="update_season_id">
+                <label>Impact ID:</label> <input type="text" name="impact_id" id="update_impact_id">
+                <label>City:</label> <input type="text" name="city" id="update_city">
+                <label>State:</label> <input type="text" name="state" id="update_state">
+                <label>Country:</label> <input type="text" name="country" id="update_country">
+                <label>Region:</label> <input type="text" name="region" id="update_region">
+                <label>Description:</label> <input type="text" name="localized_impact_desc" id="update_desc">
+            </fieldset>
+            <input type="submit" value="Update Impact">
+            <input type="button" value="Cancel" onclick="browseImpacts()">
+        </form>
+    </div>
+
+    <!-- Delete Form -->
+    <div id="delete" style="display: none;">
+        <form method="post" action="{{ url_for('delete_tropical_system_impact') }}">
+            <legend><strong>Delete Impact</strong></legend>
+            <fieldset>
+                <input type="hidden" name="system_id" id="delete_system_id">
+                <p>Are you sure you want to delete this impact?</p>
+            </fieldset>
+            <input type="submit" value="Delete Impact">
+            <input type="button" value="Cancel" onclick="browseImpacts()">
+        </form>
+    </div>
+</body>
+</html>

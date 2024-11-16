@@ -1,0 +1,17 @@
+I forget this stuff lol
+
+--First star a virtual environment --
+pip3 install --user virtualenv
+python3 -m venv . 
+source ./bin/activate
+
+-- Then install the following --
+pip3 install flask-mysqldb
+pip3 install mysql-connector-python
+pip3 install gunicorn
+
+-- Then run this to have it stay up (change the port to your port) --
+gunicorn -b 0.0.0.0:12017 -D app.app 
+
+-- Or this for testing --
+python app.py

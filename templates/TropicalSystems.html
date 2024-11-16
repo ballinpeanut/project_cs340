@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlantic Hurricane Database</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script lang="JavaScript">
+        function showForm(dowhat) {
+            if (dowhat == 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'delete') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'block';
+            }
+            else {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+        function addStorm() { showForm('insert'); }
+        function updateStorm(system_id, season_id, name, start_date, end_date, max_category, land_impact) {
+            document.getElementById('update_system_id').value = system_id;
+            document.getElementById('update_season_id').value = season_id;
+            document.getElementById('update_name').value = name;
+            document.getElementById('update_start_date').value = start_date;
+            document.getElementById('update_end_date').value = end_date;
+            document.getElementById('update_max_category').value = max_category;
+            document.getElementById('update_land_impact').value = land_impact;
+            showForm('update');
+        }
+        function deleteStorm(system_id) {
+            document.getElementById('delete_system_id').value = system_id;
+            showForm('delete');
+        }
+        function browseStorms() { showForm('browse'); }
+    </script>
+</head>
+<body onLoad="browseStorms()">
+    <h1>Atlantic Hurricane Database</h1>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a> |
+        <a href="{{ url_for('tropical_systems') }}">Tropical Storms</a> |
+        <a href="{{ url_for('impacts') }}">Impacts</a> |
+        <a href="{{ url_for('tropical_system_impacts') }}">Tropical System Impacts</a> |
+        <a href="{{ url_for('tropical_system_stats') }}">Tropical System Stats</a>
+    </nav>
+
+    <h3>View all storms occurring in a single season.</h3>
+
+    <form method="post" action="{{ url_for('tropical_systems') }}">
+        <fieldset>
+            <label>Season:</label>
+            <select name="seasonSelect">
+                {% for HurricaneSeasons in HurricaneSeasons %}
+                <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Browse">
+        </fieldset>
+    </form>
+
+    <h2>Tropical Systems</h2>
+    <div id="browse" style="display: block;">
+        <table border="1" cellpadding="5">
+            <tr>
+                <th><a href="#" onclick="addStorm()">New</a></th>
+                <th></th>
+                <th>Season ID</th>
+                <th>System ID</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Max Category</th>
+                <th>Land Impact</th>
+            </tr>
+            {% for TropicalSystems in TropicalSystems %}
+            <tr>
+                <td><a href="#" onclick="deleteStorm('{{ TropicalSystems.system_id }}')">Delete</a></td>
+                <td>
+                    <a href="#"
+                        onclick="updateStorm(
+                            '{{ TropicalSystems.system_id }}', 
+                            '{{ TropicalSystems.season_id }}', 
+                            '{{ TropicalSystems.name }}', 
+                            '{{ TropicalSystems.start_date }}', 
+                            '{{ TropicalSystems.end_date }}', 
+                            '{{ TropicalSystems.max_category }}', 
+                            '{{ TropicalSystems.land_impact }}'
+                            )">
+                            Edit
+                    </a>
+                </td>
+                <td>{{ TropicalSystems.season_id }}</td>
+                <td>{{ TropicalSystems.system_id }}</td>
+                <td>{{ TropicalSystems.name }}</td>
+                <td>{{ TropicalSystems.start_date }}</td>
+                <td>{{ TropicalSystems.end_date }}</td>
+                <td>{{ TropicalSystems.max_category }}</td>
+                <td>{{ TropicalSystems.land_impact }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Create/Insert Storm -->
+    <div id="insert" style="display: none;">
+        <form method="post" action="{{ url_for('add_tropical_system') }}">
+            <legend><strong>Add new storm</strong></legend>
+            <fieldset>
+                <label>Season:</label>
+                <select name="season_id">
+                    {% for HurricaneSeasons in HurricaneSeasons %}
+                    <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
+                    {% endfor %}
+                </select>
+                <label>System ID:</label> <input type="text" name="system_id">
+                <label>Name:</label> <input type="text" name="name">
+                <label>Start Date:</label> <input type="text" name="start_date" placeholder="YYYY-MM-DD">
+                <label>End Date:</label> <input type="text" name="end_date" placeholder="YYYY-MM-DD">
+                <label>Max Category:</label>
+                <select name="max_category">
+                    <option value="TD">TD</option>
+                    <option value="TS">TS</option>
+                    <option value="H1">H1</option>
+                    <option value="H2">H2</option>
+                    <option value="H3">H3</option>
+                    <option value="H4">H4</option>
+                    <option value="H5">H5</option>
+                </select>
+                <label>Land Impact:</label>
+                <select name="land_impact">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </fieldset>
+            <input type="submit" value="Add Storm">
+            <input type="button" value="Cancel" onclick="browseStorms()">
+        </form>
+    </div>
+
+    <!-- Update Storm -->
+    <div id="update" style="display: none;">
+        <form method="post" action="{{ url_for('update_tropical_system') }}">
+            <legend><strong>Update Storm</strong></legend>
+            <fieldset>
+                <input type="hidden" name="system_id" id="update_system_id">
+                <label>Season:</label> <input type="text" name="season_id" id="update_season_id">
+                <label>Name:</label> <input type="text" name="name" id="update_name">
+                <label>Start Date:</label> <input type="text" name="start_date" id="update_start_date" placeholder="YYYY-MM-DD">
+                <label>End Date:</label> <input type="text" name="end_date" id="update_end_date" placeholder="YYYY-MM-DD">
+                <label>Max Category:</label>
+                <select name="max_category" id="update_max_category">
+                    <option value="TD">TD</option>
+                    <option value="TS">TS</option>
+                    <option value="H1">H1</option>
+                    <option value="H2">H2</option>
+                    <option value="H3">H3</option>
+                    <option value="H4">H4</option>
+                    <option value="H5">H5</option>
+                </select>
+                <label>Land Impact:</label>
+                <select name="land_impact" id="update_land_impact">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </fieldset>
+            <input type="submit" value="Update Storm">
+            <input type="button" value="Cancel" onclick="browseStorms()">
+        </form>
+    </div>
+
+    <!-- Delete Storm -->
+    <div id="delete" style="display: none;">
+        <form method="post" action="{{ url_for('delete_tropical_system') }}">
+            <legend><strong>Delete Storm</strong></legend>
+            <fieldset>
+                <input type="hidden" name="system_id" id="delete_system_id">
+                <p>Are you sure you want to delete this storm?</p>
+            </fieldset>
+            <input type="submit" value="Delete Storm">
+            <input type="button" value="Cancel" onclick="browseStorms()">
+        </form>
+    </div>
+</body>
+</html>
