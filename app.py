@@ -228,7 +228,7 @@ def update_tropical_system_impact():
     cur.close()
     return redirect(url_for('TropicalSystemImpacts'))
 
-# Route to delete stats
+# Route to delete impact
 @app.route('/delete_tropical_system_impact', methods=['POST'])
 def delete_tropical_system_impact():
     cur = mysql.connection.cursor()
@@ -305,6 +305,17 @@ def update_tropical_system_stat():
         request.form['stat_id']
     )
     cur.execute(query, data)
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('TropicalSystemStats'))
+
+# Route to delete stats
+@app.route('/delete_tropical_system_stat', methods=['POST'])
+def delete_tropical_system_stat():
+    stat_id = request.form['stat_id']
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM TropicalSystemStats WHERE stat_id = %s"
+    cur.execute(query, (stat_id,))
     mysql.connection.commit()
     cur.close()
     return redirect(url_for('TropicalSystemStats'))
