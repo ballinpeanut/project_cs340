@@ -5,9 +5,9 @@ app = Flask(__name__)
 
 # Flask-MySQLdb configuration
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_user"  # Replace with your MySQL username
-app.config["MYSQL_PASSWORD"] = "XXXX"  # Replace with your MySQL password
-app.config["MYSQL_DB"] = "cs340_user"  # Replace with your database name
+app.config["MYSQL_USER"] = "cs340_molinami"  # Replace with your MySQL username
+app.config["MYSQL_PASSWORD"] = "1052"  # Replace with your MySQL password
+app.config["MYSQL_DB"] = "cs340_molinami"  # Replace with your database name
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 # Also change port at the bottom
 
@@ -322,4 +322,4 @@ def delete_tropical_system_stat():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=12017)
+    app.run(debug=True, port=12018)
