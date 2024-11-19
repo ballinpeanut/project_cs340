@@ -30,6 +30,12 @@
             }
         }
         function newSeason() { showForm('insert'); }
+        /*
+        Citation for the following JavaScript: updateSeason()
+        Date: 11/18/2024
+        Based on:  Javatpoint
+        Source URL: https://www.javatpoint.com/document-object-model
+        */
         function updateSeason(season_id, hurricane_count, tropical_storm_count, tropical_depression_count, first_storm_date, last_storm_date) {
             document.getElementById('season_display').innerHTML = `Season: <strong>${season_id}</strong>`;
             document.getElementById('update_season_id').value = season_id;
@@ -72,6 +78,7 @@
             </tr>
             {% for HurricaneSeasons in HurricaneSeasons %}
             <tr>
+                <!-- Access values at the current season_id to edit -->
                 <td><a href="#" onclick="updateSeason(
                     '{{ HurricaneSeasons.season_id}}',
                     '{{ HurricaneSeasons.hurricane_count }}',
@@ -80,6 +87,7 @@
                     '{{ HurricaneSeasons.first_storm_date }}',
                     '{{ HurricaneSeasons.last_storm_date}}'
                     )">Edit</a></td>
+                <!-- Display values in database for each column -->
                 <td>{{ HurricaneSeasons.season_id }}</td>
                 <td>{{ HurricaneSeasons.hurricane_count }}</td>
                 <td>{{ HurricaneSeasons.tropical_storm_count }}</td>
