@@ -67,12 +67,16 @@ def update_season():
 @app.route('/tropical_systems', methods=['GET', 'POST'])
 def tropical_systems():
     cur = mysql.connection.cursor()
+    
+    season_id = request.form.get('season_id')
+    
     if request.method == 'POST':  # Browsing based on a specific season
         season_id = request.form['seasonSelect']
+    if season_id:
         query = "SELECT * FROM TropicalSystems WHERE season_id = %s"
         cur.execute(query, (season_id,))
     else:  # Browse all systems
-        query = "SELECT * FROM TropicalSystems"
+        query = "SELECT * FROM TropicalSystems ORDER BY season_id, system_id ASC"
         cur.execute(query)
     
     TropicalSystems = cur.fetchall()
@@ -101,43 +105,48 @@ def add_tropical_system():
         request.form['max_category'],
         request.form['land_impact'],
     )
+    season_id = request.form['season_id']
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystems'))
+    return redirect(url_for('tropical_systems', season_id=season_id))
 
 # Route to update/edit tropical system
 @app.route('/update_tropical_system', methods=['POST'])
 def update_tropical_system():
     cur = mysql.connection.cursor()
     query = """
-    UPDATE tropTropicalSystemsical_systems
-    SET season_id = %s, name = %s, start_date = %s, end_date = %s, max_category = %s, land_impact = %s
-    WHERE system_id = %s
+    UPDATE TropicalSystems
+    SET name = %s, start_date = %s, end_date = %s, max_category = %s, land_impact = %s
+    WHERE system_id = %s AND season_id = %s
     """
     data = (
-        request.form['season_id'],
         request.form['name'],
         request.form['start_date'],
         request.form['end_date'],
         request.form['max_category'],
         request.form['land_impact'],
         request.form['system_id'],
+        request.form['season_id'],
     )
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystems'))
+    return redirect(url_for('tropical_systems'))
 
 # Route to delete tropical system
 @app.route('/delete_tropical_system', methods=['POST'])
 def delete_tropical_system():
     cur = mysql.connection.cursor()
-    query = "DELETE FROM TropicalSystems WHERE system_id = %s"
-    cur.execute(query, (request.form['system_id'],))
+    query = "DELETE FROM TropicalSystems WHERE system_id = %s and season_id = %s"
+    data = (
+        request.form['system_id'],
+        request.form['season_id']
+    )
+    cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystems'))
+    return redirect(url_for('tropical_systems'))
 
 
 ##### Impacts Route #####
@@ -163,7 +172,7 @@ def add_impact():
     mysql.connection.commit()
     cur.close()
 
-    return redirect(url_for('Impacts'))
+    return redirect(url_for('impacts'))
 
 
 ##### Tropical Systems Impacts #####
@@ -322,4 +331,4 @@ def delete_tropical_system_stat():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=12018)
+    app.run(debug=True, port=12010)
