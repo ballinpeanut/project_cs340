@@ -33,8 +33,12 @@
             }
         }
 
-        function addImpact() { showForm('insert'); }
-        function updateImpact(season_id, system_id, impact_id, city, state, country, region, desc) {
+        function addImpact(season_id) { 
+            document.getElementById('season_display').innerHTML = `Season: <strong>${season_id}</strong>`;
+            showForm('insert'); }
+        function updateImpact(id, season_id, system_id, impact_id, city, state, country, region, desc) {
+            document.getElementById('season_display2').innerHTML = `Season: <strong>${season_id}</strong>`;
+            document.getElementById('system_display2').innerHTML = `System ID: <strong>${system_id}</strong>`;
             document.getElementById('update_season_id').value = season_id;
             document.getElementById('update_system_id').value = system_id;
             document.getElementById('update_impact_id').value = impact_id;
@@ -45,7 +49,7 @@
             document.getElementById('update_desc').value = desc;
             showForm('update');
         }
-        function deleteImpact(season_id, system_id) {
+        function deleteImpact(id, season_id, system_id) {
             document.getElementById('season_display1').innerHTML = `Season: <strong>${season_id}</strong>`;
             document.getElementById('system_display1').innerHTML = `System ID: <strong>${system_id}</strong>`;
             document.getElementById('delete_system_id').value = system_id;
@@ -66,12 +70,28 @@
     </nav>
 
     <h3>View what impacts each storm had in a season and where the impacts occurred.</h3>
+    <h5>** Adding, editing, or deleting without first selecting a season will cause errors **</h5>
+    <form method="post" action="{{ url_for('tropical_system_impacts') }}">
+        <fieldset>
+            <label>Season:</label>
+            <select name="seasonSelect">
+                <option>-- Select Season --</option>
+                {% for HurricaneSeasons in HurricaneSeasons %}
+                <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Browse Stats">
+        </fieldset>
+    </form>
 
     <div id="browse">
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addImpact()">New</a></th>
+                <th><a href="#" onclick="addImpact(
+                    '{{ season_id }}'
+                )">New</a></th>
                 <th></th>
+                <th>System Impact ID</th>
                 <th>Season ID</th>
                 <th>System ID</th>
                 <th>Impact ID</th>
@@ -84,12 +104,14 @@
             {% for TropicalSystemImpacts in TropicalSystemImpacts %}
             <tr>
                 <td><a href="#" onclick="deleteImpact(
+                    '{{ TropicalSystemImpacts.id }}',
                     '{{ TropicalSystemImpacts.season_id }}',
                     '{{ TropicalSystemImpacts.system_id }}'
                     )">Delete</a></td>
                 <td>
                     <a href="#" 
                         onclick="updateImpact(
+                            '{{ TropicalSystemImpacts.id }}',
                             '{{ TropicalSystemImpacts.season_id }}', 
                             '{{ TropicalSystemImpacts.system_id }}', 
                             '{{ TropicalSystemImpacts.impact_id }}', 
@@ -102,6 +124,7 @@
                         Edit
                     </a>
                 </td>
+                <td>{{ TropicalSystemImpacts.id }}</td>
                 <td>{{ TropicalSystemImpacts.season_id }}</td>
                 <td>{{ TropicalSystemImpacts.system_id }}</td>
                 <td>{{ TropicalSystemImpacts.impact_id }}</td>
@@ -120,13 +143,22 @@
         <form method="post" action="{{ url_for('add_tropical_system_impact') }}">
             <legend><strong>Add New Impact</strong></legend>
             <fieldset>
-                <label>Season:</label> <select name="season_id">
-                    <option></option>
-                    {% for seasons in TropicalSystemImpacts %}
-                    <option value="{{ seasons.season_id }}">{{ seasons.season_id }}</option>
-                    {% endfor %}</select>
-                <label>System ID:</label> <input type="text" name="system_id">
-                <label>Impact ID:</label> <input type="text" name="impact_id">
+                <p id="season_display" class="season_display"></p>
+                <input type="hidden" name="season_id" value="{{ season_id }}">
+                <label>System ID:</label>
+                    <select name="system_id" id="season_id">
+                        <option>-- Select System --</option>
+                        {% for TropicalSystems in TropicalSystems %}
+                        <option value="{{ TropicalSystems.system_id}}">{{ TropicalSystems.system_id }} - {{ TropicalSystems.name }}</option>
+                        {% endfor %}
+                    </select>
+                <label>Impact ID:</label>
+                    <select name="impact_id" id="impact_id">
+                        <option>-- Select Impact --</option>
+                        {% for Impacts in Impacts %}
+                        <option value="{{ Impacts.impact_id }}">{{ Impacts.impact_id }} - {{ Impacts.impact_type }}</option>
+                        {% endfor %}
+                    </select> 
                 <label>City:</label> <input type="text" name="city">
                 <label>State:</label> <input type="text" name="state">
                 <label>Country:</label> <input type="text" name="country">
@@ -143,9 +175,19 @@
         <form method="post" action="{{ url_for('update_tropical_system_impact') }}">
             <legend><strong>Update Impact</strong></legend>
             <fieldset>
+                <input type="hidden" name="id" id="update_id">
+                <p id="season_display2" class="season_display2"></p>
+                <p id="system_display2" class="system_display2"></p>
                 <input type="hidden" name="system_id" id="update_system_id">
                 <input type="hidden" name="season_id" id="update_season_id">
-                <label>Impact ID:</label> <input type="text" name="impact_id" id="update_impact_id">
+                <label>Impact ID:</label> 
+                    <select name="impact_id" id="update_impact_id">
+                        <option></option>
+                        {% for Impacts in Impacts %}
+                        <option value="{{ Impacts.impact_id}}">
+                            {{ Impacts.impact_id }} - {{ Impacts.impact_type }}</option>
+                        {% endfor %}
+                    </select>
                 <label>City:</label> <input type="text" name="city" id="update_city">
                 <label>State:</label> <input type="text" name="state" id="update_state">
                 <label>Country:</label> <input type="text" name="country" id="update_country">

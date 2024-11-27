@@ -51,8 +51,10 @@
             document.getElementById('update_total_cost').value = total_cost;
             showForm('update');
         }
-        function deleteStat(stat_id) {
+        function deleteStat(stat_id, season_id, system_id) {
         document.getElementById('delete_stat_id').value = stat_id;
+        document.getElementById('season_display2').innerHTML = `Season: <strong>${season_id}</strong>`;
+        document.getElementById('system_display2').innerHTML = `System ID: <strong>${system_id}</strong>`;
         showForm('delete');
         }
         function browseStats() { showForm ('browse');}
@@ -69,6 +71,7 @@
     </nav>
 
     <h3>View tropical system stats for a given season</h3>
+    <h4>** Do not attempt to add, edit, or delete any stats without first selecting a season above **</h4>
     <div id="browse">
         <form method="post" action="{{ url_for('tropical_system_stats') }}">
             <fieldset>
@@ -82,14 +85,10 @@
                 <input type="submit" value="Browse Stats">
             </fieldset>
         </form>
-
-        <h2>Stats for Selected Season</h2>
-        <h4>** Do not attempt to add, edit, or delete any stats without first selecting a season above **</h4>
-        <h5>When season has been selected, table will contain data</h5>
         <table border="1" cellpadding="5">
             <tr>
                 <th><a href="#" onclick="addStats(
-                    '{{ season_id}}'
+                    '{{ season_id }}'
                 )">New</a></th>
                 <th></th>
                 <th>Stat ID</th>
@@ -105,7 +104,11 @@
             </tr>
             {% for TropicalSystemStats in TropicalSystemStats %}
             <tr>
-                <td><a href="#" onclick="deleteStat('{{ TropicalSystemStats.stat_id }}')">Delete</a></td>
+                <td><a href="#" onclick="deleteStat(
+                    '{{ TropicalSystemStats.stat_id }}',
+                    '{{ TropicalSystemStats.season_id}}',
+                    '{{ TropicalSystemStats.system_id }}'
+                    )">Delete</a></td>
                 <td>
                     <a href="#" 
                         onclick="updateStats(
@@ -150,7 +153,8 @@
                     <select name="system_id" id="season_id">
                         <option>-- Select System --</option>
                         {% for TropicalSystems in TropicalSystems %}
-                        <option value="{{ TropicalSystems.system_id}}">{{ TropicalSystems.system_id }} - {{ TropicalSystems.name }}</option>
+                        <option value="{{ TropicalSystems.system_id}}">
+                            {{ TropicalSystems.system_id }} - {{ TropicalSystems.name }}</option>
                         {% endfor %}
                     </select>
                 <label>Min Pressure:</label> <input type="text" name="min_pressure">
@@ -192,10 +196,13 @@
     <!-- Delete Stat -->
     <div id="delete" style="display: none;">
         <form method="post" action="{{ url_for('delete_tropical_system_stat') }}">
-            <legend><strong>Delete Stat</strong></legend>
+            <legend><strong>Delete Stats for a Storm</strong></legend>
             <fieldset>
+                <p>Are you sure you want to delete the stats for this storm?</p>
+                <p id="season_display2" class="season_display2"></p>
+                <p id="system_display2" class="system_display2"></p>
                 <input type="hidden" name="stat_id" id="delete_stat_id">
-                <p>Are you sure you want to delete this stat?</p>
+
             </fieldset>
             <input type="submit" value="Delete Stat">
             <input type="button" value="Cancel" onclick="browseStats()">

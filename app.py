@@ -179,16 +179,38 @@ def add_impact():
 @app.route('/tropical_system_impacts', methods=['GET', 'POST'])
 def tropical_system_impacts():
     cur = mysql.connection.cursor()
+    
+    season_id = None
+    
     if request.method == 'POST':  # Filter by season
-        season_id = request.form.get('seasonSelect', '')
+        season_id = request.form['seasonSelect']
+    if season_id:
         query = "SELECT * FROM TropicalSystemImpacts WHERE season_id = %s"
         cur.execute(query, (season_id,))
     else:  # Fetch all
-        query = "SELECT * FROM TropicalSystemImpacts"
+        query = "SELECT * FROM TropicalSystemImpacts ORDER BY season_id, system_id ASC"
         cur.execute(query)
+        
     TropicalSystemImpacts = cur.fetchall()
+    
+    # Fetch seasons for dropdown
+    cur.execute("SELECT season_id FROM HurricaneSeasons ORDER BY season_id ASC")
+    HurricaneSeasons = cur.fetchall()
+    
+    # fetch storms for the selected season
+    if season_id:
+        query = "SELECT system_id, name FROM TropicalSystems WHERE season_id = %s ORDER BY system_id ASC"
+        cur.execute(query, (season_id,))
+        TropicalSystems = cur.fetchall()
+    else:
+        TropicalSystems = []
+        
+    # fetch impacts
+    cur.execute("SELECT impact_id, impact_type FROM Impacts ORDER BY impact_id ASC")
+    Impacts = cur.fetchall()
+    
     cur.close()
-    return render_template('TropicalSystemImpacts.html', TropicalSystemImpacts=TropicalSystemImpacts)
+    return render_template('TropicalSystemImpacts.html', TropicalSystemImpacts=TropicalSystemImpacts, HurricaneSeasons=HurricaneSeasons, TropicalSystems=TropicalSystems, season_id=season_id, Impacts=Impacts)
 
 # Route to add storm impact
 @app.route('/add_tropical_system_impact', methods=['POST'])
@@ -208,10 +230,11 @@ def add_tropical_system_impact():
         request.form['region'],
         request.form['localized_impact_desc']
     )
+    season_id = request.form['season_id']
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemImpacts'))
+    return redirect(url_for('tropical_system_impacts', season_id=season_id))
 
 # Route to update storm impacts
 @app.route('/update_tropical_system_impact', methods=['POST'])
@@ -235,7 +258,7 @@ def update_tropical_system_impact():
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemImpacts'))
+    return redirect(url_for('tropical_system_impacts'))
 
 # Route to delete impact
 @app.route('/delete_tropical_system_impact', methods=['POST'])
@@ -245,7 +268,7 @@ def delete_tropical_system_impact():
     cur.execute(query, (request.form['system_id'],))
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemImpacts'))
+    return redirect(url_for('tropical_system_impacts'))
 
 
 ##### Tropical System Stats Route #####
@@ -279,7 +302,6 @@ def tropical_system_stats():
         TropicalSystems = []
         
     cur.close()
-
     return render_template('TropicalSystemStats.html', TropicalSystemStats=TropicalSystemStats, HurricaneSeasons=HurricaneSeasons, TropicalSystems=TropicalSystems, season_id=season_id)
 
 # Route to add stats
