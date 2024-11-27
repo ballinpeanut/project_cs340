@@ -33,8 +33,12 @@
             }
         }
 
-        function addStats() { showForm('insert'); }
+        function addStats(season_id) { 
+            document.getElementById('season_display').innerHTML = `Season: <strong>${season_id}</strong>`;
+            showForm('insert'); }
         function updateStats(stat_id, season_id, system_id, min_pressure, max_wind_speed, max_rainfall, max_storm_surge, death_count, injury_count, total_cost) {
+            document.getElementById('season_display1').innerHTML = `Season: <strong>${season_id}</strong>`;
+            document.getElementById('system_display').innerHTML = `System ID: <strong>${system_id}</strong>`;
             document.getElementById('update_stat_id').value = stat_id;
             document.getElementById('update_season_id').value = season_id;
             document.getElementById('update_system_id').value = system_id;
@@ -48,7 +52,7 @@
             showForm('update');
         }
         function deleteStat(stat_id) {
-        document.getElementById('delete_system_id').value = stat_id;
+        document.getElementById('delete_stat_id').value = stat_id;
         showForm('delete');
         }
         function browseStats() { showForm ('browse');}
@@ -70,6 +74,7 @@
             <fieldset>
                 <label>Season:</label>
                 <select name="seasonSelect">
+                    <option>-- Select Season --</option>
                     {% for HurricaneSeasons in HurricaneSeasons %}
                     <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
                     {% endfor %}
@@ -79,9 +84,13 @@
         </form>
 
         <h2>Stats for Selected Season</h2>
+        <h4>** Do not attempt to add, edit, or delete any stats without first selecting a season above **</h4>
+        <h5>When season has been selected, table will contain data</h5>
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addStats()">New</a></th>
+                <th><a href="#" onclick="addStats(
+                    '{{ season_id}}'
+                )">New</a></th>
                 <th></th>
                 <th>Stat ID</th>
                 <th>Season ID</th>
@@ -133,9 +142,17 @@
     <!-- Insert Stat -->
     <div id="insert" style="display: none;">
         <form method="post" action="{{ url_for('add_tropical_system_stat') }}">
+            <legend><strong>Add storm stats</strong></legend>
             <fieldset>
-                <label>Season ID:</label> <input type="text" name="season_id">
-                <label>System ID:</label> <input type="text" name="system_id">
+                <p id="season_display" class="season_display"></p>
+                <input type="hidden" name="season_id" value="{{ season_id }}">
+                <label>System ID:</label>
+                    <select name="system_id" id="season_id">
+                        <option>-- Select System --</option>
+                        {% for TropicalSystems in TropicalSystems %}
+                        <option value="{{ TropicalSystems.system_id}}">{{ TropicalSystems.system_id }} - {{ TropicalSystems.name }}</option>
+                        {% endfor %}
+                    </select>
                 <label>Min Pressure:</label> <input type="text" name="min_pressure">
                 <label>Max Wind Speed:</label> <input type="text" name="max_wind_speed">
                 <label>Max Rainfall:</label> <input type="text" name="max_rainfall">
@@ -152,10 +169,13 @@
     <!-- Update Stat -->
     <div id="update" style="display: none;">
         <form method="post" action="{{ url_for('update_tropical_system_stat') }}">
+            <legend><strong>Edit Existing System Stats</strong></legend>
             <fieldset>
                 <input type="hidden" name="stat_id" id="update_stat_id">
-                <label>Season ID:</label> <input type="text" name="season_id" id="update_season_id">
-                <label>System ID:</label> <input type="text" name="system_id" id="update_system_id">
+                <p id="season_display1" class="season_display1"></p>
+                <p id="system_display" class="system_display"></p>
+                <input type="hidden" name="season_id" id="update_season_id">
+                <input type="hidden" name="system_id" id="update_system_id">
                 <label>Min Pressure:</label> <input type="text" name="min_pressure" id="update_min_pressure">
                 <label>Max Wind Speed:</label> <input type="text" name="max_wind_speed" id="update_max_wind_speed">
                 <label>Max Rainfall:</label> <input type="text" name="max_rainfall" id="update_max_rainfall">
@@ -174,7 +194,7 @@
         <form method="post" action="{{ url_for('delete_tropical_system_stat') }}">
             <legend><strong>Delete Stat</strong></legend>
             <fieldset>
-                <input type="hidden" name="system_id" id="delete_system_id">
+                <input type="hidden" name="stat_id" id="delete_stat_id">
                 <p>Are you sure you want to delete this stat?</p>
             </fieldset>
             <input type="submit" value="Delete Stat">

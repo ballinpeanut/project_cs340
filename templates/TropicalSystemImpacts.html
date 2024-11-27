@@ -45,7 +45,9 @@
             document.getElementById('update_desc').value = desc;
             showForm('update');
         }
-        function deleteImpact(system_id) {
+        function deleteImpact(season_id, system_id) {
+            document.getElementById('season_display1').innerHTML = `Season: <strong>${season_id}</strong>`;
+            document.getElementById('system_display1').innerHTML = `System ID: <strong>${system_id}</strong>`;
             document.getElementById('delete_system_id').value = system_id;
             showForm('delete');
         }
@@ -81,7 +83,10 @@
             </tr>
             {% for TropicalSystemImpacts in TropicalSystemImpacts %}
             <tr>
-                <td><a href="#" onclick="deleteImpact('{{ TropicalSystemImpacts.system_id }}')">Delete</a></td>
+                <td><a href="#" onclick="deleteImpact(
+                    '{{ TropicalSystemImpacts.season_id }}',
+                    '{{ TropicalSystemImpacts.system_id }}'
+                    )">Delete</a></td>
                 <td>
                     <a href="#" 
                         onclick="updateImpact(
@@ -115,7 +120,11 @@
         <form method="post" action="{{ url_for('add_tropical_system_impact') }}">
             <legend><strong>Add New Impact</strong></legend>
             <fieldset>
-                <label>Season:</label> <input type="text" name="season_id">
+                <label>Season:</label> <select name="season_id">
+                    <option></option>
+                    {% for seasons in TropicalSystemImpacts %}
+                    <option value="{{ seasons.season_id }}">{{ seasons.season_id }}</option>
+                    {% endfor %}</select>
                 <label>System ID:</label> <input type="text" name="system_id">
                 <label>Impact ID:</label> <input type="text" name="impact_id">
                 <label>City:</label> <input type="text" name="city">
@@ -153,8 +162,10 @@
         <form method="post" action="{{ url_for('delete_tropical_system_impact') }}">
             <legend><strong>Delete Impact</strong></legend>
             <fieldset>
-                <input type="hidden" name="system_id" id="delete_system_id">
                 <p>Are you sure you want to delete this impact?</p>
+                <p id="season_display1" class="season_display1"></p>
+                <p id="system_display1" class="system_display1"></p>
+                <input type="hidden" name="system_id" id="delete_system_id">
             </fieldset>
             <input type="submit" value="Delete Impact">
             <input type="button" value="Cancel" onclick="browseImpacts()">

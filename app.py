@@ -252,21 +252,35 @@ def delete_tropical_system_impact():
 @app.route('/tropical_system_stats', methods=['GET', 'POST'])
 def tropical_system_stats():
     cur = mysql.connection.cursor()
+    
+    season_id = None
+    
     if request.method == 'POST':  # Filter stats by season
         season_id = request.form['seasonSelect']
+    if season_id:
         query = "SELECT * FROM TropicalSystemStats WHERE season_id = %s"
         cur.execute(query, (season_id,))
-    else:  # Fetch all stats
-        query = "SELECT * FROM TropicalSystemStats"
+    else:
+        query = "SELECT * FROM TropicalSystemStats ORDER BY season_id, system_id ASC"
         cur.execute(query)
+    
     TropicalSystemStats = cur.fetchall()
 
     # Fetch seasons for dropdown
-    cur.execute("SELECT season_id FROM HurricaneSeasons")
+    cur.execute("SELECT season_id FROM HurricaneSeasons ORDER BY season_id ASC")
     HurricaneSeasons = cur.fetchall()
+    
+    # fetch storms for the selected season
+    if season_id:
+        query = "SELECT system_id, name FROM TropicalSystems WHERE season_id = %s ORDER BY system_id ASC"
+        cur.execute(query, (season_id,))
+        TropicalSystems = cur.fetchall()
+    else:
+        TropicalSystems = []
+        
     cur.close()
 
-    return render_template('TropicalSystemStats.html', TropicalSystemStats=TropicalSystemStats, HurricaneSeasons=HurricaneSeasons)
+    return render_template('TropicalSystemStats.html', TropicalSystemStats=TropicalSystemStats, HurricaneSeasons=HurricaneSeasons, TropicalSystems=TropicalSystems, season_id=season_id)
 
 # Route to add stats
 @app.route('/add_tropical_system_stat', methods=['POST'])
@@ -287,10 +301,11 @@ def add_tropical_system_stat():
         request.form['injury_count'],
         request.form['total_cost']
     )
+    season_id = request.form['season_id']
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemStats'))
+    return redirect(url_for('tropical_system_stats', season_id=season_id))
 
 # Route to update stats
 @app.route('/update_tropical_system_stat', methods=['POST'])
@@ -298,12 +313,10 @@ def update_tropical_system_stat():
     cur = mysql.connection.cursor()
     query = """
     UPDATE TropicalSystemStats
-    SET season_id = %s, system_id = %s, min_pressure = %s, max_wind_speed = %s, max_rainfall = %s, max_storm_surge = %s, death_count = %s, injury_count = %s, total_cost = %s
+    SET min_pressure = %s, max_wind_speed = %s, max_rainfall = %s, max_storm_surge = %s, death_count = %s, injury_count = %s, total_cost = %s
     WHERE stat_id = %s
     """
     data = (
-        request.form['season_id'],
-        request.form['system_id'],
         request.form['min_pressure'],
         request.form['max_wind_speed'],
         request.form['max_rainfall'],
@@ -311,12 +324,12 @@ def update_tropical_system_stat():
         request.form['death_count'],
         request.form['injury_count'],
         request.form['total_cost'],
-        request.form['stat_id']
+        request.form['stat_id'],
     )
     cur.execute(query, data)
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemStats'))
+    return redirect(url_for('tropical_system_stats'))
 
 # Route to delete stats
 @app.route('/delete_tropical_system_stat', methods=['POST'])
@@ -327,8 +340,7 @@ def delete_tropical_system_stat():
     cur.execute(query, (stat_id,))
     mysql.connection.commit()
     cur.close()
-    return redirect(url_for('TropicalSystemStats'))
-
+    return redirect(url_for('tropical_system_stats'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=12010)
