@@ -9,14 +9,28 @@
         function showForm(dowhat) {
             if (dowhat == 'insert') {
                 document.getElementById('browse').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
                 document.getElementById('insert').style.display = 'block';
-            } else {
+            } 
+            else if (dowhat == 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+            }
+            else {
                 document.getElementById('browse').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
                 document.getElementById('insert').style.display = 'none';
             }
         }
 
         function addImpact() { showForm('insert'); }
+        function updateImpact(impact_id, impact_type) {
+            document.getElementById('impact_display').innerHTML = `Impact ID: <strong>${impact_id}</strong>`;
+            document.getElementById('update_impact_id').value = impact_id;
+            document.getElementById('update_impact_type').value = impact_type;
+            showForm('update')
+        }
         function browseImpacts() { showForm('browse'); }
     </script>
 </head>
@@ -38,11 +52,16 @@
         
         <table border="1" cellpadding="5">
             <tr>
+                <th></th>
                 <th>Impact ID</th>
                 <th>Impact Type</th>
             </tr>
             {% for Impacts in Impacts %}
             <tr>
+                <td><button type="button" onclick="updateImpact(
+                    '{{ Impacts.impact_id }}',
+                    '{{ Impacts.impact_type }}'
+                )">Edit</button></td>
                 <td>{{ Impacts.impact_id }}</td>
                 <td>{{ Impacts.impact_type }}</td>
             </tr>
@@ -50,7 +69,7 @@
         </table>
     </div>
 
-    <!-- Insert Form -->
+    <!-- Insert Impact -->
     <div id="insert" style="display: none;">
         <form method="post" action="{{ url_for('add_impact') }}">
             <legend><strong>Add new impact</strong></legend>
@@ -62,5 +81,18 @@
             <input class="btn" type="button" value="Cancel" onclick="browseImpacts()">
         </form>
     </div>
+        
+    <!-- Update Impact -->
+    <div id="update" style="display: none;">
+        <form method="post" action="{{ url_for('update_impact') }}">
+            <legend><strong>Update Impact</strong></legend>
+            <fieldset class="fields">
+                <p id="impact_display" class="impact_display"></p>
+                <input type="hidden" name="impact_id" id="update_impact_id">
+                <label>Impact Description: </label> <input type="text" name="impact_type" id="update_impact_type">
+            </fieldset>
+            <input class="btn" type="submit" value="Update Impact">
+            <input class="btn" type="button" value="Cancel" onclick="browseImpacts()">
+        </form>
 </body>
 </html>

@@ -87,9 +87,9 @@
         </form>
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addStats(
+                <th><button type="button" onclick="addStats(
                     '{{ season_id }}'
-                )">New</a></th>
+                )">New</button></th>
                 <th></th>
                 <th>Stat ID</th>
                 <th>Season ID</th>
@@ -104,28 +104,23 @@
             </tr>
             {% for TropicalSystemStats in TropicalSystemStats %}
             <tr>
-                <td><a href="#" onclick="deleteStat(
+                <td><button type="button" onclick="deleteStat(
                     '{{ TropicalSystemStats.stat_id }}',
                     '{{ TropicalSystemStats.season_id}}',
                     '{{ TropicalSystemStats.system_id }}'
-                    )">Delete</a></td>
-                <td>
-                    <a href="#" 
-                        onclick="updateStats(
-                            '{{ TropicalSystemStats.stat_id }}', 
-                            '{{ TropicalSystemStats.season_id }}', 
-                            '{{ TropicalSystemStats.system_id }}', 
-                            '{{ TropicalSystemStats.min_pressure }}', 
-                            '{{ TropicalSystemStats.max_wind_speed }}', 
-                            '{{ TropicalSystemStats.max_rainfall }}', 
-                            '{{ TropicalSystemStats.max_storm_surge }}', 
-                            '{{ TropicalSystemStats.death_count }}', 
-                            '{{ TropicalSystemStats.injury_count }}', 
-                            '{{ TropicalSystemStats.total_cost }}'
-                        )">
-                        Edit
-                    </a>
-                </td>
+                    )">Delete</button></td>
+                <td><button type="button" onclick="updateStats(
+                    '{{ TropicalSystemStats.stat_id }}', 
+                    '{{ TropicalSystemStats.season_id }}', 
+                    '{{ TropicalSystemStats.system_id }}', 
+                    '{{ TropicalSystemStats.min_pressure }}', 
+                    '{{ TropicalSystemStats.max_wind_speed }}', 
+                    '{{ TropicalSystemStats.max_rainfall }}', 
+                    '{{ TropicalSystemStats.max_storm_surge }}', 
+                    '{{ TropicalSystemStats.death_count }}', 
+                    '{{ TropicalSystemStats.injury_count }}', 
+                    '{{ TropicalSystemStats.total_cost }}'
+                    )">Edit</button></td>
                 <td>{{ TropicalSystemStats.stat_id }}</td>
                 <td>{{ TropicalSystemStats.season_id }}</td>
                 <td>{{ TropicalSystemStats.system_id }}</td>

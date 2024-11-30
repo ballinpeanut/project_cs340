@@ -61,14 +61,15 @@
     </nav>
 
     <h3>Each season is represented by a year.</h3>
-    <h5>Add or edit season counts.</h5>
+    <p><strong>A Hurricane Season is typically denoted as the year it occurs in. Ex. 2024 Hurricane Season</strong></p>
 
+    <h5>Add or edit season counts. Unable to delete to avoid accidental deletions. If mistake is made, edit the entry.</h5>
     <!-- Data table -->
     <h2>Hurricane Seasons</h2>
     <div id="browse">
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="newSeason()">New</a></th>
+                <th><button type="button" onclick="newSeason()">New</button></th>
                 <th>Season ID</th>
                 <th>Hurricane Count</th>
                 <th>Tropical Storm Count</th>
@@ -79,14 +80,14 @@
             {% for HurricaneSeasons in HurricaneSeasons %}
             <tr>
                 <!-- Access values at the current season_id to edit -->
-                <td><a href="#" onclick="updateSeason(
+                <td><button type="button" onclick="updateSeason(
                     '{{ HurricaneSeasons.season_id}}',
                     '{{ HurricaneSeasons.hurricane_count }}',
                     '{{ HurricaneSeasons.tropical_storm_count}}',
                     '{{ HurricaneSeasons.tropical_depression_count}}',
                     '{{ HurricaneSeasons.first_storm_date }}',
                     '{{ HurricaneSeasons.last_storm_date}}'
-                    )">Edit</a></td>
+                    )">Edit</button></td>
                 <!-- Display values in database for each column -->
                 <td>{{ HurricaneSeasons.season_id }}</td>
                 <td>{{ HurricaneSeasons.hurricane_count }}</td>

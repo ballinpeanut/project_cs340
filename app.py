@@ -174,6 +174,22 @@ def add_impact():
 
     return redirect(url_for('impacts'))
 
+# Route for updating/editing impacts
+@app.route('/update_impact', methods=['POST'])
+def update_impact():
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        UPDATE Impacts
+        SET impact_type = %s
+        WHERE impact_id = %s
+    """, (
+        request.form['impact_type'],
+        request.form['impact_id']
+    ))
+    
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('impacts'))
 
 ##### Tropical Systems Impacts #####
 @app.route('/tropical_system_impacts', methods=['GET', 'POST'])

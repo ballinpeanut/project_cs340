@@ -87,9 +87,9 @@
     <div id="browse">
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addImpact(
+                <th><button type="button" onclick="addImpact(
                     '{{ season_id }}'
-                )">New</a></th>
+                )">New</button></th>
                 <th></th>
                 <th>System Impact ID</th>
                 <th>Season ID</th>
@@ -103,27 +103,22 @@
             </tr>
             {% for TropicalSystemImpacts in TropicalSystemImpacts %}
             <tr>
-                <td><a href="#" onclick="deleteImpact(
+                <td><button type="button" onclick="deleteImpact(
                     '{{ TropicalSystemImpacts.id }}',
                     '{{ TropicalSystemImpacts.season_id }}',
                     '{{ TropicalSystemImpacts.system_id }}'
-                    )">Delete</a></td>
-                <td>
-                    <a href="#" 
-                        onclick="updateImpact(
-                            '{{ TropicalSystemImpacts.id }}',
-                            '{{ TropicalSystemImpacts.season_id }}', 
-                            '{{ TropicalSystemImpacts.system_id }}', 
-                            '{{ TropicalSystemImpacts.impact_id }}', 
-                            '{{ TropicalSystemImpacts.city }}', 
-                            '{{ TropicalSystemImpacts.state }}', 
-                            '{{ TropicalSystemImpacts.country }}', 
-                            '{{ TropicalSystemImpacts.region }}', 
-                            '{{ TropicalSystemImpacts.localized_impact_desc }}'
-                        )">
-                        Edit
-                    </a>
-                </td>
+                    )">Delete</button></td>
+                <td><button type="button" onclick="updateImpact(
+                    '{{ TropicalSystemImpacts.id }}',
+                    '{{ TropicalSystemImpacts.season_id }}', 
+                    '{{ TropicalSystemImpacts.system_id }}', 
+                    '{{ TropicalSystemImpacts.impact_id }}', 
+                    '{{ TropicalSystemImpacts.city }}', 
+                    '{{ TropicalSystemImpacts.state }}', 
+                    '{{ TropicalSystemImpacts.country }}', 
+                    '{{ TropicalSystemImpacts.region }}', 
+                    '{{ TropicalSystemImpacts.localized_impact_desc }}'
+                    )">Edit</button></td>
                 <td>{{ TropicalSystemImpacts.id }}</td>
                 <td>{{ TropicalSystemImpacts.season_id }}</td>
                 <td>{{ TropicalSystemImpacts.system_id }}</td>

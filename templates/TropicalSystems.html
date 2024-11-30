@@ -73,7 +73,7 @@
         <fieldset>
             <label>Season:</label>
             <select name="seasonSelect">
-                <option></option>
+                <option>-- Select Season --</option>
                 {% for HurricaneSeasons in HurricaneSeasons %}
                 <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
                 {% endfor %}
@@ -85,7 +85,7 @@
     <div id="browse" style="display: block;">
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#" onclick="addStorm()">New</a></th>
+                <th><button type="button" onclick="addStorm()">New</button></th>
                 <th></th>
                 <th>Season ID</th>
                 <th>System ID</th>
@@ -97,23 +97,20 @@
             </tr>
             {% for TropicalSystems in TropicalSystems %}
             <tr>
-                <td><a href="#" onclick="deleteStorm(
+                <td><button type="button" onclick="deleteStorm(
                     '{{ TropicalSystems.season_id }}',
                     '{{ TropicalSystems.system_id }}',
                     '{{ TropicalSystems.name }}'
-                    )">Delete</a></td>
-                <td>
-                    <a href="#" onclick="updateStorm(
-                        '{{ TropicalSystems.system_id }}', 
-                        '{{ TropicalSystems.season_id }}', 
-                        '{{ TropicalSystems.name }}', 
-                        '{{ TropicalSystems.start_date }}', 
-                        '{{ TropicalSystems.end_date }}', 
-                        '{{ TropicalSystems.max_category }}', 
-                        '{{ TropicalSystems.land_impact }}'
-                        )">Edit
-                    </a>
-                </td>
+                    )">Delete</button></td>
+                <td><button type="button" onclick="updateStorm(
+                    '{{ TropicalSystems.system_id }}', 
+                    '{{ TropicalSystems.season_id }}', 
+                    '{{ TropicalSystems.name }}', 
+                    '{{ TropicalSystems.start_date }}', 
+                    '{{ TropicalSystems.end_date }}', 
+                    '{{ TropicalSystems.max_category }}', 
+                    '{{ TropicalSystems.land_impact }}'
+                    )">Edit</button></td>
                 <td>{{ TropicalSystems.season_id }}</td>
                 <td>{{ TropicalSystems.system_id }}</td>
                 <td>{{ TropicalSystems.name }}</td>
@@ -133,7 +130,7 @@
             <fieldset>
                 <label>Season:</label>
                 <select name="season_id">
-                    <option></option>
+                    <option>-- Select Season --</option>
                     {% for HurricaneSeasons in HurricaneSeasons %}
                     <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
                     {% endfor %}
@@ -144,7 +141,7 @@
                 <label>End Date:</label> <input type="text" name="end_date" placeholder="YYYY-MM-DD">
                 <label>Max Category:</label>
                 <select name="max_category">
-                    <option></option>
+                    <option>-- Choose System Strength --</option>
                     <option value="TD">TD</option>
                     <option value="TS">TS</option>
                     <option value="H1">H1</option>
@@ -155,7 +152,7 @@
                 </select>
                 <label>Land Impact:</label>
                 <select name="land_impact">
-                    <option></option>
+                    <option>-- Was there any impact to land? --</option>
                     <option value="0">No</option>
                     <option value="1">Yes</option>
                 </select>
