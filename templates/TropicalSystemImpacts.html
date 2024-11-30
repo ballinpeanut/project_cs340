@@ -52,7 +52,7 @@
         function deleteImpact(id, season_id, system_id) {
             document.getElementById('season_display1').innerHTML = `Season: <strong>${season_id}</strong>`;
             document.getElementById('system_display1').innerHTML = `System ID: <strong>${system_id}</strong>`;
-            document.getElementById('delete_system_id').value = system_id;
+            document.getElementById('delete_id').value = id;
             showForm('delete');
         }
         function browseImpacts() { showForm('browse'); }
@@ -202,7 +202,7 @@
                 <p>Are you sure you want to delete this impact?</p>
                 <p id="season_display1" class="season_display1"></p>
                 <p id="system_display1" class="system_display1"></p>
-                <input type="hidden" name="system_id" id="delete_system_id">
+                <input type="hidden" name="id" id="delete_id">
             </fieldset>
             <input type="submit" value="Delete Impact">
             <input type="button" value="Cancel" onclick="browseImpacts()">

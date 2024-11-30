@@ -17,7 +17,7 @@ mysql = MySQL(app)
 @app.route('/')
 def index():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM HurricaneSeasons")
+    cur.execute("SELECT * FROM HurricaneSeasons ORDER BY season_id ASC")
     HurricaneSeasons = cur.fetchall()
     cur.close()
     return render_template('index.html', HurricaneSeasons=HurricaneSeasons)
@@ -280,8 +280,8 @@ def update_tropical_system_impact():
 @app.route('/delete_tropical_system_impact', methods=['POST'])
 def delete_tropical_system_impact():
     cur = mysql.connection.cursor()
-    query = "DELETE FROM TropicalSystemImpacts WHERE system_id = %s"
-    cur.execute(query, (request.form['system_id'],))
+    query = "DELETE FROM TropicalSystemImpacts WHERE id = %s"
+    cur.execute(query, (request.form['id'],))
     mysql.connection.commit()
     cur.close()
     return redirect(url_for('tropical_system_impacts'))
