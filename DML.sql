@@ -134,10 +134,3 @@
     -- DELETE entry matching up to the selected stat id
     DELETE FROM TropicalSystemStats WHERE stat_id = %s
 
-    -- SELECT Queries
-
-    -- Get statistical data for a specific tropical system to display in a detailed view or for analysis
-    SELECT season_id, system_id, min_pressure, max_wind_speed, max_rainfall, max_storm_surge, death_count, injury_count, total_cost 
-    FROM TropicalSystemStats 
-    WHERE season_id = @seasonID AND system_id = @systemID;
-
