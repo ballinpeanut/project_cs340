@@ -75,8 +75,9 @@
             <li>Select season from dropdown menu for "Season" and then press "Browse Stats"</li>
             <li>Make any changes needed</li>
         </ol>
-        This is required in order to fill in the dropdown menus. 
+        This is required in order to fill in the dropdown menus.
     </h5>
+    <h5>If system had no impacts, set impact_id to NULL in dropdown</h5>
     
     <form method="post" action="{{ url_for('tropical_system_impacts') }}">
         <fieldset>
@@ -185,7 +186,7 @@
                 <input type="hidden" name="season_id" id="update_season_id">
                 <label>Impact ID:</label> 
                     <select name="impact_id" id="update_impact_id">
-                        <option></option>
+                        <option value="NULL">NULL - No Damage</option>
                         {% for Impacts in Impacts %}
                         <option value="{{ Impacts.impact_id}}">
                             {{ Impacts.impact_id }} - {{ Impacts.impact_type }}</option>
