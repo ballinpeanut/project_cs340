@@ -232,6 +232,11 @@ def tropical_system_impacts():
 @app.route('/add_tropical_system_impact', methods=['POST'])
 def add_tropical_system_impact():
     cur = mysql.connection.cursor()
+    
+    impact_id = request.form['impact_id']
+    if impact_id == "NULL":
+        impact_id = None
+    
     query = """
     INSERT INTO TropicalSystemImpacts (season_id, system_id, impact_id, city, state, country, region, localized_impact_desc)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -239,7 +244,7 @@ def add_tropical_system_impact():
     data = (
         request.form['season_id'],
         request.form['system_id'],
-        request.form['impact_id'],
+        impact_id,
         request.form['city'],
         request.form['state'],
         request.form['country'],
@@ -256,13 +261,18 @@ def add_tropical_system_impact():
 @app.route('/update_tropical_system_impact', methods=['POST'])
 def update_tropical_system_impact():
     cur = mysql.connection.cursor()
+    
+    impact_id = request.form['impact_id']
+    if impact_id == "NULL":
+        impact_id = None
+    
     query = """
     UPDATE TropicalSystemImpacts
     SET impact_id = %s, city = %s, state = %s, country = %s, region = %s, localized_impact_desc = %s
     WHERE season_id = %s AND system_id = %s
     """
     data = (
-        request.form['impact_id'],
+        impact_id,
         request.form['city'],
         request.form['state'],
         request.form['country'],
@@ -381,4 +391,4 @@ def delete_tropical_system_stat():
     return redirect(url_for('tropical_system_stats'))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=12017)
+    app.run(debug=True, port=12010)

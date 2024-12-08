@@ -70,7 +70,14 @@
     </nav>
 
     <h3>View what impacts each storm had in a season and where the impacts occurred.</h3>
-    <h5>** Adding, editing, or deleting without first selecting a season will cause errors **</h5>
+    <h5>Steps to make Add, Edit, and Delete functions work:
+        <ol>
+            <li>Select season from dropdown menu for "Season" and then press "Browse Stats"</li>
+            <li>Make any changes needed</li>
+        </ol>
+        This is required in order to fill in the dropdown menus. 
+    </h5>
+    
     <form method="post" action="{{ url_for('tropical_system_impacts') }}">
         <fieldset>
             <label>Season:</label>
@@ -150,6 +157,7 @@
                 <label>Impact ID:</label>
                     <select name="impact_id" id="impact_id">
                         <option>-- Select Impact --</option>
+                        <option value="NULL">NULL - No Damage</option>
                         {% for Impacts in Impacts %}
                         <option value="{{ Impacts.impact_id }}">{{ Impacts.impact_id }} - {{ Impacts.impact_type }}</option>
                         {% endfor %}

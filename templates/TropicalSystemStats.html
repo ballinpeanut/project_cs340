@@ -71,7 +71,13 @@
     </nav>
 
     <h3>View tropical system stats for a given season</h3>
-    <h4>** Do not attempt to add, edit, or delete any stats without first selecting a season below **</h4>
+    <h5>Steps to make Add, Edit, and Delete functions work:
+        <ol>
+            <li>Select season from dropdown menu for "Season" and then press "Browse Stats"</li>
+            <li>Make any changes needed</li>
+        </ol>
+        This is required in order to fill in the dropdown menus. 
+    </h5>
     <div id="browse">
         <form method="post" action="{{ url_for('tropical_system_stats') }}">
             <fieldset>
