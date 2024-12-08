@@ -57,11 +57,11 @@
     </script>
 </head>
 <body onLoad="browseStorms()">
-    <h1>Atlantic Hurricane Database</h1>
+    <h1>Tropical Systems</h1>
 
     <nav>
         <a href="{{ url_for('index') }}">Home</a> |
-        <a href="{{ url_for('tropical_systems') }}">Tropical Storms</a> |
+        <a href="{{ url_for('tropical_systems') }}">Tropical Systems</a> |
         <a href="{{ url_for('impacts') }}">Impacts</a> |
         <a href="{{ url_for('tropical_system_impacts') }}">Tropical System Impacts</a> |
         <a href="{{ url_for('tropical_system_stats') }}">Tropical System Stats</a>
@@ -126,6 +126,7 @@
     <!-- Create/Insert Storm -->
     <div id="insert" style="display: none;">
         <form method="post" action="{{ url_for('add_tropical_system') }}">
+            <p>Season names skip over letters Q, U, X, Y, and Z for a total of 21 storm names per season, where A = 1, W = 21 and Q is skipped</p>
             <legend><strong>Add new storm</strong></legend>
             <fieldset>
                 <label>Season:</label>
@@ -135,7 +136,7 @@
                     <option value="{{ HurricaneSeasons.season_id }}">{{ HurricaneSeasons.season_id }}</option>
                     {% endfor %}
                 </select>
-                <label>System ID:</label> <input type="text" name="system_id" placeholder="ex. A = 1, M = 13, Z = 26">
+                <label>System ID:</label> <input type="text" name="system_id" placeholder="ex. A = 1, M = 13, W = 21">
                 <label>Name:</label> <input type="text" name="name">
                 <label>Start Date:</label> <input type="text" name="start_date" placeholder="YYYY-MM-DD">
                 <label>End Date:</label> <input type="text" name="end_date" placeholder="YYYY-MM-DD">
