@@ -6,6 +6,12 @@
     <title>Tropical Impacts</title>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <script lang="JavaScript">
+        /*
+        Citation for the following JavaScript:
+        Date: 11/18/2024
+        Adapted from:  Canvas Explorations
+        Source URL: https://canvas.oregonstate.edu/courses/1976520/pages/exploration-web-application-technology?module_item_id=24719064
+        */
         function showForm(dowhat) {
             if (dowhat == 'insert') {
                 document.getElementById('browse').style.display = 'none';
@@ -35,6 +41,11 @@
     </script>
 </head>
 <body onload="browseImpacts()">
+    <!-- Citation for any Jinja2 code used:
+        Date: 11/18/2024
+        Adapted from:  Jinja Documentation
+        Source URL: https://jinja.palletsprojects.com/en/stable/templates/ -->
+
     <h1>Impacts</h1>
 
     <nav>

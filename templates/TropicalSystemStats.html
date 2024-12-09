@@ -6,6 +6,12 @@
     <title>Tropical System Stats</title>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
     <script lang="JavaScript">
+        /*
+        Citation for the following JavaScript:
+        Date: 11/18/2024
+        Adapted from:  Canvas Explorations
+        Source URL: https://canvas.oregonstate.edu/courses/1976520/pages/exploration-web-application-technology?module_item_id=24719064
+        */
         function showForm(dowhat) {
             if (dowhat == 'update') {
                 document.getElementById('browse').style.display = 'none';
@@ -61,6 +67,10 @@
     </script>
 </head>
 <body onload="showForm('browse')">
+        <!-- Citation for any Jinja2 code used:
+        Date: 11/18/2024
+        Adapted from:  Jinja Documentation
+        Source URL: https://jinja.palletsprojects.com/en/stable/templates/ -->
     <h1>Tropical System Stats</h1>
     <nav>
         <a href="{{ url_for('index') }}">Home</a> |
